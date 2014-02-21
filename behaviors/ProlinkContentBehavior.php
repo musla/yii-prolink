@@ -13,13 +13,6 @@ class ProlinkContentBehavior extends CActiveRecordBehavior{
 		return parent::afterDelete($event);
 	}
 
-	/*	
-	public function afterFind($event){
-		$this->_oldKeyValue = $this->getOwner()->getAttribute($this->keyAttribute);
-		return parent::afterFind($event);
-	}
-	*/
-
 	/**
 	 * Return pro-linked version of the text.
 	 * Todo: its necessary to implement shadow relation to avoid another query for linked text.
@@ -28,6 +21,9 @@ class ProlinkContentBehavior extends CActiveRecordBehavior{
 	 * than traditional DB table storage. 
 	 */
 	public function linked($field) {
+		/* Get timestamo of last key table change
+		 * This code is mysql dependant.
+		 */
 		$curdba  = explode('=', Yii::app()->db->connectionString);
 		$curdb =  $curdba[2];
 		
@@ -78,6 +74,7 @@ class ProlinkContentBehavior extends CActiveRecordBehavior{
 	 * Create pro-linked text from source
 	 */
 	public function createLinked($text) {
+		$text = " " . $text;
 		/*using ActiveRecord for large datasets is highly inefficient*/	
 		$cmd = Yii::app()->db->createCommand('SELECT p.key, p.url FROM prolink_keys p');
 		$keys=$cmd->query();
@@ -97,10 +94,8 @@ class ProlinkContentBehavior extends CActiveRecordBehavior{
 			        $offset = $position + 1;
 			    }
 			}
-			return $text;			
 		}
-
-		
+		$text = substr($text,1);
 		return $text;
 	}
 
