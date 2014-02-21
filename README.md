@@ -58,6 +58,6 @@ If you find any bugs, please create an issue at [issue tracker for project Githu
 ## License
 This work is licensed under a MIT license. Full text is included in the `LICENSE` file in the root of codebase.
 
-Perfect web applications.
 
 [www.tomashnilica.com](http://www.tomashnilica.com)
+Perfect web applications.
