@@ -15,7 +15,13 @@ class ProlinkSourceBehavior extends CActiveRecordBehavior{
 	 */
 	public $urlMap = array(); 
 	
+	
 	public function afterSave($event){
+		$this->addKeySources();	
+		return parent::afterSave($event);
+	}
+	
+	public function addKeySources(){
 		$newRecords = array();
 		$oldRecords = $this->keyRecords();
 		$oldKeys = array();
@@ -44,7 +50,7 @@ class ProlinkSourceBehavior extends CActiveRecordBehavior{
 		$toDelete = array_diff($oldKeys, $newRecords);
 		/*to be faster*/
 		if (!empty($toDelete)) Yii::app()->db->createCommand()->delete('prolink_keys',"(id IN(".implode(',',$toDelete).")) ");
-		return parent::afterSave($event);
+		
 	}
 
 	public function afterDelete($event){

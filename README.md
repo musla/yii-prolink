@@ -4,6 +4,9 @@ Prolink v0.1
 Prolink is a linking behavior for [Yii web framework](http://www.yiiframework.com) that collects key from 
 ActiveRecords and automatically creates link in other ActiveRecords attributes. 
 
+The keys from source AcriveRecords are created on afterSave(), linked content in destination ActiveRecords 
+are generated on-demand. 
+
 ## Installation
 
 Import migrations/prolink.sql into your database. 
@@ -44,6 +47,8 @@ In the views replace $model->text with Behavior method $model->linked('text').
 ## Todo
 This is initial version that uses database for both, keys and converted text. In comparison with other tools caching prolinked 
 text is stored and updated in DB and not calculated on the fly. 
+
+Implement initial indexing call.
 
 However there is a change that other caching mechanism would be much faster. 
 I plan to create a 'ContentStorage' abstract class working on key-value principe to store the prolinked content. 
