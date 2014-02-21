@@ -6,9 +6,8 @@ ActiveRecords and automatically creates link in other ActiveRecords attributes.
 
 ## Installation
 
-### Import migrations/prolink.sql into your database. 
+Import migrations/prolink.sql into your database. 
 
-### Include models into your application in config/main.php:
 
 ```
 'import'=>array(
@@ -16,7 +15,7 @@ ActiveRecords and automatically creates link in other ActiveRecords attributes.
 )
 ```
 
-### To the ActiveRecord that is supposed to be linked add a ProlinkSource Behavior.
+To the ActiveRecord that is supposed to be linked add a ProlinkSource Behavior.
 For example the User ActiveRecord.
 
 ```
@@ -29,7 +28,7 @@ For example the User ActiveRecord.
 ``` 
 You can specify more expressions to be linked in keys array. 
 
-### Add ProlinkContent behavior to the ActiveRecord models where you want attributes to be pro-linked and use prolinked values.
+Add ProlinkContent behavior to the ActiveRecord models where you want attributes to be pro-linked and use prolinked values.
 For example the Blog ActiveRecord 
 ```
 'ProlinkContentBehavior' => array(
