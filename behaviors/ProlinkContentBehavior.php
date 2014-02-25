@@ -14,6 +14,16 @@ class ProlinkContentBehavior extends CActiveRecordBehavior{
 	}
 
 	/**
+	 * Delete cached content when a record was changes. 
+	 * todo: store old values of prolinked attributes and delete only in
+	 * case those have been changed.  
+	 */
+	public function afterSave($event){
+		Yii::app()->db->delete('prolink_content', array('model'=> get_class($this->getOwner()) , 'model_id'=> $this->getNormalizedPk() ) );
+		return parent::afterSave($event);
+	}
+	
+	/**
 	 * Return pro-linked version of the text.
 	 * Todo: its necessary to implement shadow relation to avoid another query for linked text.
 	 * When performance is slow try to use memcached server. 
