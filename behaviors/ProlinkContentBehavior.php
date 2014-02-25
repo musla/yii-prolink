@@ -9,7 +9,7 @@ class ProlinkContentBehavior extends CActiveRecordBehavior{
 		
 	
 	public function afterDelete($event){		
-		Yii::app()->db->delete('prolink_content', array('model'=> get_class($this->getOwner()) , 'model_id'=> $this->getNormalizedPk() ) );
+		Yii::app()->db->createCommand()->delete('prolink_content', 'model=:model AND model_id=:model_id', array(':model'=> get_class($this->getOwner()) , ':model_id'=> $this->getNormalizedPk() ) );
 		return parent::afterDelete($event);
 	}
 
@@ -19,7 +19,7 @@ class ProlinkContentBehavior extends CActiveRecordBehavior{
 	 * case those have been changed.  
 	 */
 	public function afterSave($event){
-		Yii::app()->db->delete('prolink_content', array('model'=> get_class($this->getOwner()) , 'model_id'=> $this->getNormalizedPk() ) );
+		Yii::app()->db->createCommand()->delete('prolink_content', 'model=:model AND model_id=:model_id', array(':model'=> get_class($this->getOwner()) , ':model_id'=> $this->getNormalizedPk() ) );
 		return parent::afterSave($event);
 	}
 	
@@ -85,13 +85,14 @@ class ProlinkContentBehavior extends CActiveRecordBehavior{
 	 * Create pro-linked text from source
 	 */
 	public function createLinked($text) {
-		$text = " " . $text;
+		$text = "  " . $text . " ";
 		/*using ActiveRecord for large datasets is highly inefficient*/	
-		$cmd = Yii::app()->db->createCommand('SELECT p.key, p.url FROM prolink_keys p');
+		$cmd = Yii::app()->db->createCommand('SELECT p.key, p.url FROM prolink_keys p ORDER BY LENGTH(p.key) DESC');
 		$keys=$cmd->query();
 		
 		while(($row=$keys->read())!==false) {
-			$phrase = $row["key"];
+			$phrase = " ".$row["key"]." ";
+			//$phrase = $row["key"];
 			$link = CHtml::link($phrase, $row['url'], array('class'=>'prolink'));
 			$str_lc = strtolower($text);
 			$offset = 0;
@@ -106,7 +107,9 @@ class ProlinkContentBehavior extends CActiveRecordBehavior{
 			    }
 			}
 		}
-		$text = substr($text,1);
+		if (substr($text,0,2) == "  ") $text = substr($text,2);
+		else $text = substr($text,1);
+		$text = substr($text,0,strlen($text)-1);
 		return $text;
 	}
 

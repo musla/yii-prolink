@@ -28,7 +28,7 @@ class ProlinkSourceBehavior extends CActiveRecordBehavior{
 		foreach($oldRecords as $or) array_push($oldKeys, $or->id);
 		
 		foreach($this->keys as $k) {
-			$newkey = $this->evaluateExpression($k,array('data'=>$this->getOwner()));
+			$newkey = trim($this->evaluateExpression($k,array('data'=>$this->getOwner())));
 			$key = null;
 			foreach($oldRecords as $ok) if ($ok->key == $newkey) {
 				$key = $ok;
@@ -60,7 +60,7 @@ class ProlinkSourceBehavior extends CActiveRecordBehavior{
 		 * Consider a table prolink_keys => prolink_content
 		 */	
 		//$sql = "DELETE FROM prolink_keys WHERE model = :model and model_id = :model_id";
-		Yii::app()->db->createCommand()->delete('prolink_keys', array('model'=> get_class($this->getOwner()) , 'model_id'=> $this->getNormalizedPk() ) );
+		Yii::app()->db->createCommand()->delete('prolink_keys', 'model=:model AND model_id=:model_id', array(':model'=> get_class($this->getOwner()) , ':model_id'=> $this->getNormalizedPk() ) );
 		return parent::afterDelete($event);
 	}
 
