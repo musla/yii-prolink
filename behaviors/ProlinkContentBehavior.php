@@ -37,6 +37,7 @@ class ProlinkContentBehavior extends CActiveRecordBehavior{
 		$curdba  = explode('=', Yii::app()->db->connectionString);
 		$curdb =  $curdba[2];
 		
+		$lastSourceModify = 0;
 		$lsm = Yii::app()->db->createCommand("
 					SELECT UPDATE_TIME FROM  information_schema.tables WHERE  TABLE_SCHEMA = '${curdb}' AND TABLE_NAME = 'prolink_keys'")->
 					queryAll();
