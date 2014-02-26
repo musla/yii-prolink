@@ -85,7 +85,7 @@ class ProlinkContentBehavior extends CActiveRecordBehavior{
 	 * Create pro-linked text from source
 	 */
 	public function createLinked($text) {
-		$text = "  " . $text . " ";
+		$text = "  " . $text . "  ";
 		/*using ActiveRecord for large datasets is highly inefficient*/	
 		$cmd = Yii::app()->db->createCommand('SELECT p.key, p.url FROM prolink_keys p ORDER BY LENGTH(p.key) DESC');
 		$keys=$cmd->query();
@@ -110,6 +110,8 @@ class ProlinkContentBehavior extends CActiveRecordBehavior{
 		if (substr($text,0,2) == "  ") $text = substr($text,2);
 		else $text = substr($text,1);
 		$text = substr($text,0,strlen($text)-1);
+		if (substr($text,strlen($text)-2) == "  ") $text = substr($text,0,strlen($text)-2);
+		else $text = substr($text,0,strlen($text)-1);
 		return $text;
 	}
 
